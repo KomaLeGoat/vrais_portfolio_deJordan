@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Koma</title>
+  <meta name="description" content="Portfolio de Jordan Bourgine, étudiant en BTS SIO option SLAM — développement web, projets, stages et certifications." />
+  <meta name="theme-color" content="#2a1838" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23f4f1ea' stroke='%23141414' stroke-width='5'/%3E%3Cpath d='M3 32a29 29 0 0 1 58 0z' fill='%23d4111a' stroke='%23141414' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23f4f1ea' stroke='%23141414' stroke-width='5'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Silkscreen:wght@400;700&family=Yuji+Boku&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=78" />
+</head>
+
+<body>
+
+
+  <!-- Black Flash (黒閃) : éclairs noirs et rouges plein écran -->
+  <canvas class="black-flash" id="blackFlash" aria-hidden="true"></canvas>
+  <div class="bf-kanji" id="bfKanji" aria-hidden="true">黒閃</div>
+
+  <div class="progression" aria-hidden="true"><i id="progression"></i></div>
+  <div class="curseur" id="curseur" aria-hidden="true"><i></i></div>
+
+  <!-- ════════════ LIGHTBOX ════════════ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <div class="lb-inner">
+      <div class="lb-header">
+        <span class="lb-title" id="lbTitle">Certification</span>
+        <button class="lb-close" id="lbClose" aria-label="Fermer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+        </button>
+      </div>
+      <div class="lb-body" id="lbBody"></div>
+    </div>
+  </div>
+
+  <!-- ════════════ SIDEBAR ════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sb-toggle" id="sbToggle" aria-label="Ouvrir ou fermer le menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7" /><polyline points="6 17 11 12 6 7" /></svg>
+    </button>
+    <a href="#Accueil" class="sb-logo">Jordan<span>.</span></a>
+    <nav class="sb-nav">
+      <a href="#Accueil" class="sb-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+        <span class="sb-label">Accueil</span>
+      </a>
+      <a href="#APropos" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" /></svg>
+        <span class="sb-label">A propos</span>
+      </a>
+      <a href="#Formation" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z" /><path d="M6 12v5c3 3 9 3 12 0v-5" /></svg>
+        <span class="sb-label">Formation</span>
+      </a>
+      <a href="#Outils" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>
+        <span class="sb-label">Outils</span>
+      </a>
+      <a href="#Projets" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
+        <span class="sb-label">Projets</span>
+      </a>
+      <a href="#Stage" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></svg>
+        <span class="sb-label">Mes stages</span>
+      </a>
+      <a href="#Certifications" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" /></svg>
+        <span class="sb-label">Certifications</span>
+      </a>
+      <a href="#Veilles" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+        <span class="sb-label">Veilles</span>
+      </a>
+      <a href="#Evenements" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+        <span class="sb-label">Événements</span>
+      </a>
+      <a href="#Contact" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+        <span class="sb-label">Contact</span>
+      </a>
+    </nav>
+    <div class="sb-footer"></div>
+  </aside>
+
+  <main id="contenu">
+
+    <!-- ════════════ HERO ════════════ -->
+    <section id="Accueil" data-palier="Accueil" class="hero">
+      <div class="hero-kanji" aria-hidden="true">呪術師</div>
+
+      <div class="hero-layout">
+        <div class="hero-content">
+          <p class="hero-sur"><span class="pastille"></span> BTS SIO · SLAM — 2026</p>
+          <h1 class="hero-title" aria-label="Portfolio Koma">
+            <span class="line"><span class="line-inner">Portfolio</span></span>
+            <span class="line"><span class="line-inner ac">Koma<i class="hero-trait" aria-hidden="true"></i></span></span>
+          </h1>
+          <p class="hero-desc">
+            Bonjour, je suis <strong>Jordan Bourgine</strong>,<br>
+            développeur web passionné par la création<br>Vous me découvrirez plus en détail.
+          </p>
+          <div class="hero-cta">
+            <a href="#Projets" class="btn-p magnetique">Voir mes projets</a>
+            <a href="#Contact" class="btn-s magnetique">Me contacter</a>
+          </div>
+        </div>
+      </div>
+
+
+      <a href="#APropos" class="scroll-hint"><span class="scroll-line"></span>Scroll</a>
+    </section>
+
+    <!-- ════════════ À PROPOS DE MOI ════════════ -->
+    <section id="APropos" data-palier="À propos" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">壱</span>
+        <h2 class="sec-title">À propos de moi.</h2>
+        <p class="sec-sub reveal">Un peu plus sur qui je suis, ma passion pour le développement et mon univers.</p>
+      </div>
+
+      <div class="apropos">
+        <article class="ap-ligne reveal">
+          <div class="ap-img ap-img--photo encre">
+            <img src="images/jordan.webp" alt="Jordan Bourgine" loading="lazy" />
+          </div>
+          <div class="ap-texte">
+            <h3>Bonjour, je suis <span class="ac">Jordan</span> !</h3>
+            <p>Étudiant en BTS SIO option SLAM, je suis fan de développement et j'essaie de m'améliorer.</p>
+            <p>Curieux, je passe mon temps libre à jouer, contribuer à des projets personnels et faire des certifications. Mon objectif : Créer un jeu fonctionnel.</p>
+          </div>
+        </article>
+
+        <article class="ap-ligne ap-ligne--inverse reveal">
+          <div class="ap-img ap-img--ds encre">
+            <img src="images/pokemon_bw.webp" alt="Univers pokemon" loading="lazy" />
+          </div>
+          <div class="ap-texte">
+            <h3>Inspiré par <span class="ac">Pokémon Blanc et Noir</span></h3>
+            <p>Tout est parti de là...une DS et un enfant avec trop de temps devant lui. C'est ce qui m'a lancé dans l'informatique, rendu curieux, et poussé vers cette voie qu'est le BTS SIO. Et encore aujourd'hui, rien que le nom de ces jeux suffit à me rappeler pourquoi je continue, pourquoi je m'améliore, pourquoi je construis.</p>
+            <p>Cette passion pour la culture geek se retrouve dans chacun de mes projets : une touche de personnalité, une interface qu'on a envie d'explorer.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ════════════ FORMATION ════════════ -->
+    <section id="Formation" data-palier="Formation" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">弐</span>
+        <h2 class="sec-title">Ma formation.</h2>
+        <p class="sec-sub reveal">Une formation technique en informatique orientée développement web et applications métiers.</p>
+      </div>
+
+      <div class="technique reveal">
+        <div class="slam3d" id="slam3dBoite">
+          <canvas id="slam3d" aria-label="Le mot SLAM en 3D"></canvas>
+          <span class="slam-secours" aria-hidden="true">SLAM</span>
+          <span class="slam-aide" aria-hidden="true">Touche une lettre</span>
+        </div>
+        <div class="tq-corps">
+          <div class="fm-badge">BTS SIO — SLAM</div>
+          <h3>Solutions Logicielles et Applications Métiers</h3>
+          <p>Spécialisation réservée aux vrais créateurs, axée sur l'innovation absolue, le développement d'architectures parfaites et l'écriture de code.</p>
+          <ul class="fm-list">
+            <li>Création d'applications web et mobiles hors du commun</li>
+            <li>Architecture logicielle &amp; programmation orientée objet</li>
+            <li>Maîtrise des bases de données SQL</li>
+            <li>MLD, MCD concept et idée</li>
+            <li>Méthodologies agiles pour la création de projet</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ OUTILS ════════════ -->
+    <section id="Outils" data-palier="Outils" class="sec" data-sans-fenetre>
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">参</span>
+        <h2 class="sec-title">Mes outils au quotidien.</h2>
+        <p class="sec-sub reveal">Les outils et languages que j'utilise</p>
+      </div>
+      <div class="pokedex reveal" id="pokedex">
+        <div class="dex-ecran">
+          <div class="tools-3d-wrap" id="toolsWrap">
+            <div class="tools-3d-scene" id="toolsScene"></div>
+          </div>
+          <div class="dex-info" aria-live="polite"><span id="dexNum">N°001</span><b id="dexNom">XAMPP</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ PROJETS ════════════ -->
+    <section id="Projets" data-palier="Projets" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">肆</span>
+        <h2 class="sec-title">Mes Projets.</h2>
+        <p class="sec-sub reveal">Découvrez les projets que j'ai réalisés au fil de mes 2 ans et certains projets hors-cours</p>
+      </div>
+      <div class="proj-grid" id="projGrid"></div>
+    </section>
+
+    <!-- ════════════ STAGES ════════════ -->
+    <section id="Stage" data-palier="Stages" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">伍</span>
+        <h2 class="sec-title">Mes stages</h2>
+        <p class="sec-sub reveal" id="stageDesc">Mise en place d'une solution complète GLPI de zéro : gestion de parc et centre de services (Helpdesk).</p>
+      </div>
+
+      <!-- Sélecteur de stage : flèches de part et d'autre pour basculer entre les 2 missions -->
+      <div class="stage-switch reveal">
+        <button class="stage-arrow" id="stagePrev" type="button" aria-label="Stage précédent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="stage-head">
+          <span class="stage-count" id="stageCount">Stage 1 / 2</span>
+          <h3 class="stage-name" id="stageName">Lycée LMR — Solution GLPI</h3>
+          <span class="stage-meta" id="stageMeta">Gestion de parc &amp; Centre de services · 2025</span>
+        </div>
+        <button class="stage-arrow" id="stageNext" type="button" aria-label="Stage suivant">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+      <div class="stage-dots">
+        <button class="stage-dot active" type="button" data-stage="0" aria-label="Aller au stage 1"></button>
+        <button class="stage-dot" type="button" data-stage="1" aria-label="Aller au stage 2"></button>
+      </div>
+
+      <div class="stage-panels" id="stagePanels">
+
+        <!-- ── STAGE 1 : Lycée LMR / Solution GLPI ── -->
+        <div class="stage-panel" data-stage="0">
+          <div class="timeline">
+            <div class="tl-rail" aria-hidden="true"><i></i></div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">01. Architecture &amp; Base</span>
+                <h3 class="tl-title">Environnement Serveur</h3>
+                <p class="tl-desc">Étude des besoins du lycée. Installation de Debian, configuration IP fixe, et mise en place de la stack LAMP (MariaDB, PHP, Apache) pour héberger la solution.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">壱</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">02. Déploiement</span>
+                <h3 class="tl-title">Installation GLPI</h3>
+                <p class="tl-desc">Téléchargement et configuration initiale de GLPI 10. Paramétrage de la base de données, sécurisation de l'installation et gestion des droits applicatifs majeurs.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">弐</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">03. Intégration LDAP</span>
+                <h3 class="tl-title">Synchronisation au Domaine</h3>
+                <p class="tl-desc">Connexion à l'Active Directory du lycée pour l'importation et l'authentification des utilisateurs. Création d'entités, de profils (Professeurs, Élèves) et de groupes spécifiques.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">参</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">04. Parc &amp; Gestion des Patrimoines</span>
+                <h3 class="tl-title">Inventaire Automatisé &amp; Suivi des Actifs</h3>
+                <p class="tl-desc">Déploiement des agents GLPI sur le réseau de l'établissement pour faire remonter automatiquement les configurations matérielles et logicielles des postes, via les plugins <strong>FusionInventory</strong> (collecte automatique des inventaires réseau) et <strong>Manage Entities</strong> (gestion hiérarchique des entités). Les données collectées alimentent directement le module de gestion des patrimoines : catégorisation des équipements, suivi des affectations par utilisateur et par salle, gestion des licences logicielles et suivi du cycle de vie des actifs (date d'achat, garantie, fin de vie).</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">肆</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">05. Support</span>
+                <h3 class="tl-title">Centre de Services (Helpdesk)</h3>
+                <p class="tl-desc">Configuration du Helpdesk pour la DSI (Direction des Systèmes d'Information) : mise en place du catalogue de services et des règles de priorité, afin que chaque demande utilisateur génère automatiquement un ticket suivi.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">伍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STAGE 2 : Caledonia / Application multiplateforme ── -->
+        <div class="stage-panel" data-stage="1" hidden>
+          <div class="timeline">
+            <div class="tl-rail" aria-hidden="true"><i></i></div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"></path><rect x="9" y="3" width="6" height="4" rx="1"></rect><line x1="9" y1="12" x2="15" y2="12"></line><line x1="9" y1="16" x2="13" y2="16"></line></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">01. Cadrage</span>
+                <h3 class="tl-title">Analyse du besoin &amp; Cahier des charges</h3>
+                <p class="tl-desc">Recueil du besoin de la chaîne Caledonia et rédaction du cahier des charges. Priorisation des fonctionnalités (Essentiel / Important / Optionnel) et cadrage du périmètre : replays, direct, grille TV, actualités, météo, favoris et notifications.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">壱</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">02. Architecture</span>
+                <h3 class="tl-title">Architecture 100 % autonome (sans serveur)</h3>
+                <p class="tl-desc">Choix d'une architecture sans serveur ni base de données propres : tous les contenus proviennent du site officiel <strong>caledonia.nc</strong> et de services tiers (YouTube, flux HLS, Météo-France, GeoJS). Coûts, maintenance et surface de données personnelles réduits au minimum.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">弐</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">03. Développement</span>
+                <h3 class="tl-title">Une base de code, trois plateformes</h3>
+                <p class="tl-desc">Développement de l'interface en <strong>React 18 + Vite + TypeScript</strong>, empaquetée avec <strong>Capacitor</strong> pour l'APK Android et <strong>Electron</strong> pour l'application de bureau, et servie telle quelle en site web. Un seul code source alimente les trois cibles.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">参</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">04. Contenus</span>
+                <h3 class="tl-title">Récupération des contenus &amp; cache hors-ligne</h3>
+                <p class="tl-desc">Extraction (scraping) des replays, actualités et grille TV depuis le site officiel. Stratégie « stale-while-revalidate » avec cache local (6 h) : affichage instantané du contenu déjà chargé, mise à jour discrète en arrière-plan et consultation possible hors-ligne.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">肆</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">05. Lecture &amp; direct</span>
+                <h3 class="tl-title">Lecteur, direct &amp; favoris</h3>
+                <p class="tl-desc">Intégration du lecteur YouTube sans cookies pour les replays, du flux <strong>HLS</strong> pour le direct et du widget Météo-France. Enregistrement local des replays favoris et de l'historique de visionnage, sans aucun compte utilisateur.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">伍</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">06. Sécurité</span>
+                <h3 class="tl-title">Géo-blocage &amp; confidentialité (RGPD)</h3>
+                <p class="tl-desc">Accès réservé à la Nouvelle-Calédonie via une détection du pays par adresse IP (GeoJS). HTTPS obligatoire, permissions Android minimales, aucun traceur ni identifiant publicitaire ; favoris et préférences stockés uniquement sur l'appareil.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">陸</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">07. Nouveautés · Addendum</span>
+                <h3 class="tl-title">Identité visuelle &amp; notifications locales</h3>
+                <p class="tl-desc">Refonte de l'icône et de l'écran de démarrage aux couleurs de la charte Caledonia, et mise en place de notifications <strong>100 % locales</strong> (@capacitor/local-notifications) : rappel du direct chaque soir à 18h et programme du week-end, sans serveur ni collecte de données.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">漆</span>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+              <div class="tl-content">
+                <span class="tl-step">08. Livrables</span>
+                <h3 class="tl-title">Livrables &amp; documentation de reprise</h3>
+                <p class="tl-desc">Production de l'APK de démonstration, du code source complet, du cahier des charges et d'une documentation technique de reprise de 35 pages : schémas d'architecture, visite guidée des écrans, procédures de build et de maintenance.</p>
+              </div>
+              <span class="tl-kanji" aria-hidden="true">捌</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ CERTIFICATIONS ════════════ -->
+    <section id="Certifications" data-palier="Certifications" class="sec" data-sans-fenetre>
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">陸</span>
+        <h2 class="sec-title">Mes certifications.</h2>
+        <p class="sec-sub reveal">Clique sur "Voir le certificat" pour afficher la preuve de chaque certification obtenue.</p>
+      </div>
+      <div class="cert-grid" id="certGrid">
+        <div class="cert-card" data-cert="Hack The Box" data-img="images/cert_htb.webp" data-forme="hexa">
+          <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+          <div class="cert-badge">Validé</div>
+          <div class="cert-name">Hack The Box</div>
+        </div>
+        <div class="cert-card" data-cert="SecNumAcadémie — ANSSI" data-img="images/cert_secnum.webp" data-forme="bouclier">
+          <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg></div>
+          <div class="cert-badge">Validé</div>
+          <div class="cert-name">SecNumAcadémie — ANSSI</div>
+        </div>
+        <div class="cert-card" data-cert="Cisco" data-img="images/cert_cisco.webp" data-forme="rond">
+          <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><path d="M12 14V10"></path><path d="M8 14V6"></path><path d="M16 14V6"></path><path d="M4 14V2"></path><path d="M20 14V2"></path></svg></div>
+          <div class="cert-badge">Validé</div>
+          <div class="cert-name">Cisco</div>
+        </div>
+        <div class="cert-card" data-cert="Mimo" data-img="images/cert_mimo.webp" data-forme="losange">
+          <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div>
+          <div class="cert-badge">Validé</div>
+          <div class="cert-name">Mimo</div>
+        </div>
+        <div class="cert-card" data-cert="Certification PIX" data-img="docs/certification-pix-20241024.pdf" data-forme="etoile">
+          <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+          <div class="cert-badge">Validé</div>
+          <div class="cert-name">Certification PIX</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ VEILLE : dialogue façon Pokémon Donjon Mystère ════════════ -->
+    <section id="Veilles" data-palier="Veille" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">漆</span>
+        <h2 class="sec-title">Ma veille technologique</h2>
+        <p class="sec-sub reveal">L'IA dans la cybersécurité ca fais quoi ? Et pourquoi ?</p>
+      </div>
+
+      <div class="pmd reveal" id="pmd">
+        <div class="pmd-scene" aria-hidden="true">
+          <img class="pmd-sprite" id="pmdSprite" src="images/dialogue1.webp" alt="" />
+        </div>
+        <div class="pmd-cadre pmd-portrait">
+          <img src="images/portrait1.png" alt="Portrait de Jordan" id="dialogueImg" />
+        </div>
+        <div class="pmd-cadre pmd-boite" id="pmdBoite" tabindex="0" role="button" aria-label="Faire avancer le dialogue">
+          <div class="dialogue-step-label" id="dialogueLabel">01 / 03 — Histoire</div>
+          <p class="pmd-texte"><span class="pmd-nom">Jordan</span><span class="pmd-guillemet">「</span><span id="dialogueText"></span></p>
+          <span class="pmd-suite" aria-hidden="true"></span>
+        </div>
+        <div class="pmd-commandes">
+          <div class="dialogue-dots">
+            <button class="dot active" data-step="0" aria-label="Étape 1"></button>
+            <button class="dot" data-step="1" aria-label="Étape 2"></button>
+            <button class="dot" data-step="2" aria-label="Étape 3"></button>
+          </div>
+          <div class="dialogue-boutons" id="dialogueBoutons">
+            <button class="pmd-btn" id="dialoguePrev" disabled>◀ Précédent</button>
+            <button class="pmd-btn pmd-btn--suivant" id="dialogueNext">Suivant ▶</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ ÉVÉNEMENTS ════════════ -->
+    <section id="Evenements" data-palier="Événements" class="sec">
+      <div class="sec-tete">
+        <span class="sec-kanji" aria-hidden="true">捌</span>
+        <h2 class="sec-title">Nos Événements</h2>
+        <p class="sec-sub reveal">Les Événements vécus lors de mes 2 ans au BTS SIO</p>
+      </div>
+
+      <div class="arbre" id="arbre">
+        <div class="arbre-tronc" aria-hidden="true"><i id="arbreTronc"></i></div>
+
+        <div class="tc tc--g">
+          <div class="tc-img-wrap" data-title="Hackagou" data-img="images/ev_hackagou.webp" tabindex="0" role="button">
+            <img src="images/ev_hackagou.webp" alt="Hackagou" loading="lazy" />
+            <div class="tc-img-overlay"><span>Voir la photo</span></div>
+          </div>
+          <div class="tc-body">
+            <h4>Hackagou</h4>
+            <p>Hackathon calédonien, compétitient entre classes et professionelle avec comme résultat un top 12 avec plus de 200 participants.</p>
+            <span class="tc-year">2025</span>
+          </div>
+        </div>
+
+        <div class="tc tc--d">
+          <div class="tc-img-wrap" data-title="Semaine du Numérique" data-img="images/ev_semaine.webp" tabindex="0" role="button">
+            <img src="images/ev_semaine.webp" alt="Semaine du Numérique" loading="lazy" />
+            <div class="tc-img-overlay"><span>Voir la photo</span></div>
+          </div>
+          <div class="tc-body">
+            <h4>Semaine du Numérique</h4>
+            <p>Ateliers et jeux préparé pour une journée entre nous et les curieux venues découvrire l'informatique</p>
+            <span class="tc-year">2025</span>
+          </div>
+        </div>
+
+        <div class="tc tc--g">
+          <div class="tc-img-wrap" data-title="Olympiade des SIO" data-img="images/ev_olympiade.webp" tabindex="0" role="button">
+            <img src="images/ev_olympiade.webp" alt="Olympiade des SIO" loading="lazy" />
+            <div class="tc-img-overlay"><span>Voir la photo</span></div>
+          </div>
+          <div class="tc-body">
+            <h4>Olympiade des SIO</h4>
+            <p>Compétition entre nous, avec 12 épreuve et on résultat une victoire top 1 !.</p>
+            <span class="tc-year">2025</span>
+          </div>
+        </div>
+
+        <div class="tc tc--d">
+          <div class="tc-img-wrap" data-title="Sortie à la DINUM" data-img="images/ev_dinum.webp" tabindex="0" role="button">
+            <img src="images/ev_dinum.webp" alt="Sortie à la DINUM" loading="lazy" />
+            <div class="tc-img-overlay"><span>Voir la photo</span></div>
+          </div>
+          <div class="tc-body">
+            <h4>Sortie à la DINUM</h4>
+            <p>Une sortit pédagogique qui ma permit de mieux découvrire le travail en informatique.</p>
+            <span class="tc-year">2025</span>
+          </div>
+        </div>
+
+        <div class="tc tc--g">
+          <div class="tc-img-wrap" data-title="Speed Meeting à la Station N" data-img="images/ev_stationn.webp" tabindex="0" role="button">
+            <img src="images/ev_stationn.webp" alt="Speed Meeting Station N" loading="lazy" />
+            <div class="tc-img-overlay"><span>Voir la photo</span></div>
+          </div>
+          <div class="tc-body">
+            <h4>Speed Meeting — Station N</h4>
+            <p>Rencontres professionnelles avec des experts du numérique et opportunités de stage au sein de la Station N.</p>
+            <span class="tc-year">2025</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════ CONTACT ════════════ -->
+    <section id="Contact" data-palier="Contact" class="sec contact">
+      <h2 class="ct-title reveal">Me<br><span class="ac">Contacter</span></h2>
+      <p class="ct-sub reveal">Un projet en tête ? Je suis disponible pour discuter de vos idées.</p>
+
+      <form id="contactForm" class="contact-form reveal" action="https://formspree.io/f/mdarojvb" method="POST">
+        <div class="form-group">
+          <label for="name">Nom / Entreprise</label>
+          <input type="text" id="name" name="name" required placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label for="email">Email de contact</label>
+          <input type="email" id="email" name="email" required placeholder="vous@exemple.com">
+        </div>
+        <div class="form-group">
+          <label for="message">Description du projet</label>
+          <textarea id="message" name="message" rows="4" required placeholder="Détaillez votre demande..."></textarea>
+        </div>
+        <button type="submit" class="btn-p btn-submit">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          <span>Envoyer le message</span>
+        </button>
+        <div id="formFeedback" class="form-feedback" role="status"></div>
+      </form>
+
+      <div class="social-links reveal">
+        <a href="mailto:jordan.bourgine@example.com" class="btn-s magnetique">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+          Email direct
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener" class="btn-s magnetique">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/KomaLeGoat" target="_blank" rel="noopener" class="btn-s magnetique">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          GitHub
+        </a>
+        <a href="docs/CV_jordan2026.pdf" download class="btn-s magnetique">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Télécharger mon CV
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/vendor/GLTFLoader.js"></script>
+  <script src="js/trois-outils.js?v=78"></script>
+  <script src="assets/decor/textures.js?v=78"></script>
+  <script src="js/escalier.js?v=78"></script>
+  <script src="js/iles.js?v=78"></script>
+  <script src="js/fenetres.js?v=78"></script>
+  <script src="js/descente.js?v=78"></script>
+  <script src="js/defilement.js?v=78"></script>
+  <script src="js/effets.js?v=78"></script>
+  <script src="js/slam3d.js?v=78"></script>
+  <script src="js/main.js?v=78"></script>
+</body>
+
+</html>

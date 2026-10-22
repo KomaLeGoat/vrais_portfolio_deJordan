@@ -1,0 +1,56 @@
+PORTFOLIO KOMA — v4 « les îles célestes » (décor 3D : coucher de soleil -> crépuscule étoilé)
+=================================================================
+
+Thème Yuji Itadori / Jujutsu Kaisen + clins d'œil Pokémon. Tous les textes de l'ancien portfolio.
+L'ancien (Downloads/portfolio_v3/portfolio_clean) n'a pas été modifié.
+
+OUVRIR LE SITE
+  - Double-clic sur « Lancer le site.bat » : serveur local + ouverture dans le navigateur (Ctrl+F5 pour recharger).
+  - Double-clic sur index.html : ça marche aussi directement (la 3D est embarquée).
+  - Ou avec un petit serveur :  python -m http.server 8777  puis http://localhost:8777
+
+LUGULABRE
+  Lugulabre (modélisé dans Blender) flotte à côté de nous : il descend l'escalier d'île en île, regarde
+  la souris, se range à côté du texte, et réagit quand on clique sur lui (Black Flash).
+
+LE DÉCOR
+  Des îles célestes reliées par un escalier de pierres flottantes : chaque partie a son île (torii + plaque
+  à son nom) et son contenu est posé dessus en 3D (cliquable). La caméra vole d'île en île au défilement ;
+  le soleil se couche jusqu'au crépuscule étoilé. Chaque partie est une fenêtre posée sur son île :
+  un clic l'ouvre au premier plan, un clic à côté (ou Échap) la renvoie dans le décor.
+  Le défilement reste normal (juste une vitesse maximale) ; la souris fait légèrement tourner la tête.
+
+CONTENU
+  index.html            la page
+  css/style.css         le style (couleurs dans :root en haut du fichier)
+  js/escalier.js        le décor 3D (îles, escalier, ciel, nuages, torii) + Lugulabre qui nous suit
+  js/iles.js            le contenu de chaque partie posé en 3D sur son île (cartes, badges, outils, photos…)
+  js/fenetres.js        chaque partie = une fenêtre posée dans le décor ; clic = premier plan, clic ailleurs = retour
+  js/descente.js        relie le défilement à la caméra de l'escalier (un arrêt par partie)
+  js/defilement.js      vitesse de défilement plafonnée
+  assets/decor/         textures du décor (+ textures.js en base64 pour le double-clic)
+  js/trois-outils.js    outils three.js (rendu robuste, chargement des modèles, style manga)
+  js/effets.js          Black Flash 黒閃, curseur, boutons magnétiques
+  js/hero3d.js          (plus utilisé) ancienne Poké Ball + compagnons « gonflés »
+  assets/3d/compagnons/ lugulabre.glb (utilisé) ; komasan, pyrax, mentali (essais, pas utilisés)
+  js/slam3d.js          le mot SLAM en 3D (Formation)
+  js/main.js            menu, animations GSAP, Pokédex, cartes holo, stages, dialogue Donjon Mystère, formulaire
+  js/vendor/            three.js r128, GLTFLoader, GSAP 3.12.5 (copies locales)
+  assets/3d/            pokeball.glb, creatures.glb, slam.glb (+ copies .glb.js pour le double-clic), pokeball.webp
+  images/               images (WebP), portraits pixel « Donjon Mystère », talismans
+  docs/                 CV, certification PIX, dossier de veille (.pptx)
+
+REFAIRE LES RESSOURCES (_outils/)  —  Blender = "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"
+  blender -b -P _outils/compagnons/lugulabre.py  Lugulabre -> assets/3d/compagnons/lugulabre.glb (+ .glb.js)
+                                                aperçu 4 angles : http://localhost:8777/_outils/compagnons/apercu.html?nom=lugulabre
+  py -3.13 _outils/decor_textures.py            textures du décor (pierre, dalles)
+  py -3.13 _outils/images.py                    images de l'ancien portfolio + portraits pixel -> images/
+  py -3.13 _outils/textures.py                  textures des talismans (police Yuji Boku)
+  blender -b -P _outils/pokeball.py -- --image  Poké Ball -> assets/3d/pokeball.glb + image de secours
+  py -3.13 _outils/gonfler.py                   illustrations officielles (_outils/officielles/*_source.png)
+                                                -> détourage, texture, carte de relief
+  blender -b -P _outils/creatures_officielles.py -- --apercu
+                                                compagnons 3D « gonflés » -> assets/3d/creatures.glb
+  blender -b -P _outils/slam.py                 le mot SLAM -> assets/3d/slam.glb
+
+Après une modification de CSS/JS, augmenter le ?v=N dans index.html pour vider le cache du navigateur.

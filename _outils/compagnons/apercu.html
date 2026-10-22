@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aperçu des compagnons</title>
+  <style>
+    :root { --fond: #1f1630; --texte: #fff; }
+    * { box-sizing: border-box; margin: 0; }
+    body { background: radial-gradient(120% 90% at 50% 100%, #ff9b5c 0%, #c9568a 38%, #3a2a6a 75%, #1f1630 100%) fixed; color: var(--texte); font-family: system-ui, sans-serif; min-height: 100vh; }
+    header { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 12px 16px; background: rgba(0, 0, 0, .35); }
+    header b { margin-right: 10px; }
+    button { font: inherit; padding: 6px 14px; border-radius: 99px; border: 1px solid rgba(255, 255, 255, .5); background: rgba(255, 255, 255, .1); color: #fff; cursor: pointer; }
+    button.actif { background: #fff; color: #222; }
+    #vues { position: relative; width: 100%; height: calc(100vh - 54px); }
+    canvas { display: block; width: 100%; height: 100%; }
+    .etiq { position: absolute; top: 8px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .8; transform: translateX(-50%); }
+  </style>
+</head>
+<body>
+  <header>
+    <b id="titre">Compagnon</b>
+    <span>Animation :</span>
+    <span id="anims"></span>
+    <span style="margin-left:auto">Tourner : glisser</span>
+  </header>
+  <div id="vues">
+    <canvas id="c"></canvas>
+    <span class="etiq" style="left:12.5%">Face</span>
+    <span class="etiq" style="left:37.5%">Trois-quarts</span>
+    <span class="etiq" style="left:62.5%">Profil</span>
+    <span class="etiq" style="left:87.5%">Dos</span>
+  </div>
+  <script src="../../js/vendor/three.min.js"></script>
+  <script src="../../js/vendor/GLTFLoader.js"></script>
+  <script src="../../js/trois-outils.js"></script>
+  <script>
+    const nom = new URLSearchParams(location.search).get('nom') || 'lugulabre';
+    const EP = { lugulabre: 0.022, komasan: 0.02, pyrax: 0.02, mentali: 0.02 }[nom] || 0.02;
+    document.getElementById('titre').textContent = nom[0].toUpperCase() + nom.slice(1);
+    const canvas = document.getElementById('c');
+    const renderer = Trois.rendu(canvas);
+    renderer.setScissorTest(true);
+    const scene = new THREE.Scene();
+    scene.environment = Trois.environnement(renderer);
+    scene.add(new THREE.HemisphereLight(0xffe2d0, 0x6a4a7a, 0.9));
+    const cle = new THREE.DirectionalLight(0xffffff, 1.0);
+    cle.position.set(-3, 5, 6);
+    scene.add(cle);
+    const contre = new THREE.DirectionalLight(0xff9a6a, 0.6);
+    contre.position.set(3, 2, -4);
+    scene.add(contre);
+    const cams = [0, 40, 90, 180].map(() => new THREE.PerspectiveCamera(30, 1, 0.1, 100));
+    let modele = null, mixer = null, actions = {}, courant = null, azimut = 0, hauteur = 0, rayon = 10, centre = new THREE.Vector3();
+
+    Trois.glb(`../../assets/3d/compagnons/${nom}.glb`, `COMPAGNON_${nom.toUpperCase()}`).then(g => {
+      modele = g.scene;
+      Trois.manga(modele, { ep: EP, sansContour: (n) => /flamme/.test(n) });
+      scene.add(modele);
+      const b = new THREE.Box3().setFromObject(modele);
+      b.getCenter(centre);
+      rayon = b.getSize(new THREE.Vector3()).length() * 1.5;
+      hauteur = 0.1;
+      mixer = new THREE.AnimationMixer(modele);
+      const zone = document.getElementById('anims');
+      g.animations.forEach(clip => {
+        actions[clip.name] = mixer.clipAction(clip);
+        const bt = document.createElement('button');
+        bt.textContent = clip.name.replace(nom + '_', '');
+        bt.onclick = () => jouer(clip.name);
+        zone.appendChild(bt);
+      });
+      const repos = g.animations.find(a => /repos/.test(a.name));
+      if (repos) jouer(repos.name);
+      window.__pret = true;
+    }).catch(e => { document.getElementById('titre').textContent = 'Erreur : ' + e; });
+
+    function jouer(n) {
+      const a = actions[n];
+      if (!a) return;
+      document.querySelectorAll('#anims button').forEach(b => b.classList.toggle('actif', b.textContent === n.replace(nom + '_', '')));
+      if (courant && courant !== a) courant.fadeOut(0.2);
+      a.reset().fadeIn(0.2).play();
+      const boucle = /repos/.test(n);
+      a.setLoop(boucle ? THREE.LoopRepeat : THREE.LoopOnce);
+      a.clampWhenFinished = !boucle;
+      courant = a;
+      if (!boucle) mixer.addEventListener('finished', function fin(e) {
+        if (e.action !== a) return;
+        mixer.removeEventListener('finished', fin);
+        const r = Object.keys(actions).find(k => /repos/.test(k));
+        if (r) jouer(r);
+      });
+    }
+    window.jouer = jouer;
+
+    let glisse = null;
+    canvas.addEventListener('pointerdown', e => { glisse = e.clientX; });
+    addEventListener('pointerup', () => { glisse = null; });
+    addEventListener('pointermove', e => { if (glisse !== null) { azimut += (e.clientX - glisse) * 0.01; glisse = e.clientX; } });
+
+    let prec = performance.now();
+    (function boucle(now) {
+      requestAnimationFrame(boucle);
+      const dt = Math.min(0.05, (now - prec) / 1000);
+      prec = now;
+      if (mixer) mixer.update(dt);
+      const W = canvas.clientWidth, H = canvas.clientHeight;
+      renderer.setSize(W, H, false);
+      const w = W / 4;
+      [0, 40, 90, 180].forEach((az, i) => {
+        const cam = cams[i];
+        cam.aspect = w / H;
+        cam.updateProjectionMatrix();
+        const a = THREE.MathUtils.degToRad(az) + azimut;
+        const d = rayon / (2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2))) * 0.62 * Math.max(1, 0.75 / cam.aspect);
+        cam.position.set(centre.x + Math.sin(a) * d, centre.y + d * 0.12, centre.z + Math.cos(a) * d);
+        cam.lookAt(centre);
+        renderer.setViewport(i * w, 0, w, H);
+        renderer.setScissor(i * w, 0, w, H);
+        renderer.render(scene, cam);
+      });
+    })(prec);
+  </script>
+</body>
+</html>
